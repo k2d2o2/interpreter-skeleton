@@ -102,8 +102,10 @@ arith
 
 cond
   : NOT cond
-  | e EQ e
-  | e NE e
+  | arith EQ arith
+  | arith NE arith
+  | cond EQ cond
+  | cond NE cond
   | arith LT arith
   | arith GT arith
   | arith LE arith
