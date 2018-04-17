@@ -5,6 +5,8 @@
  * Run "./sbt compile" or "sbt.bat - compile" or "compile" using sbt shell
 
 ## Target Language
+### extension
+* *.pa1
 ### Syntax
   *program* -> *function** main-*function*<br/>
   *function* -> **def** *name* *params* **:=** *block*<br/>
