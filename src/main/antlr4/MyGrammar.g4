@@ -6,11 +6,18 @@ grammar MyGrammar;
 
 /* Lexical rules */
 
-IF   : 'if' ;
-THEN : 'then';
+DEF: 'def';
+ASSIGN: ':=';
 
-AND : 'and' ;
-OR  : 'or' ;
+
+IF   : 'if' ;
+ELSE : 'else' ;
+
+WHILE: 'while';
+RETURN: 'return';
+
+AND : '&&' ;
+OR  : '||' ;
 
 TRUE  : 'true' ;
 FALSE : 'false' ;
@@ -24,10 +31,16 @@ GT : '>' ;
 GE : '>=' ;
 LT : '<' ;
 LE : '<=' ;
-EQ : '=' ;
+EQ : '==' ;
+NE : '!=' ;
+
+NOT : '!';
 
 LPAREN : '(' ;
 RPAREN : ')' ;
+
+LBRACK: '{';
+RBRACK: '}';
 
 // DECIMAL, IDENTIFIER, COMMENTS, WS are set using regular expressions
 
@@ -36,6 +49,8 @@ DECIMAL : '-'?[0-9]+('.'[0-9]+)? ;
 IDENTIFIER : [a-zA-Z_][a-zA-Z_0-9]* ;
 
 SEMI : ';' ;
+
+STRING : '"' .*? '"';
 
 // COMMENT and WS are stripped from the output token stream by sending
 // to a different channel 'skip'
@@ -46,50 +61,56 @@ WS : [ \r\t\u000C\n]+ -> skip ;
 
 /* Grammar rules */
 
-rule_set : single_rule* EOF ;
+program: function* function EOF ;
 
-single_rule : IF condition THEN conclusion SEMI ;
+function: DEF IDENTIFIER LPAREN params RPAREN ASSIGN block;
 
-condition : logical_expr ;
-conclusion : IDENTIFIER ;
+params: param*;
 
-logical_expr
- : logical_expr AND logical_expr # LogicalExpressionAnd
- | logical_expr OR logical_expr  # LogicalExpressionOr
- | comparison_expr               # ComparisonExpression
- | LPAREN logical_expr RPAREN    # LogicalExpressionInParen
- | logical_entity                # LogicalEntity
- ;
+param: IDENTIFIER;
 
-comparison_expr : comparison_operand comp_operator comparison_operand
-                    # ComparisonExpressionWithOperator
-                | LPAREN comparison_expr RPAREN # ComparisonExpressionParens
-                ;
+block
+  : LBRACK stmt* RBRACK
+  | stmt
+  ;
 
-comparison_operand : arithmetic_expr
-                   ;
+stmt
+  : lv ASSIGN e SEMI
+  | IF LPAREN cond RPAREN block ELSE block
+  | IF LPAREN cond RPAREN block
+  | WHILE LPAREN cond RPAREN block
+  | RETURN e
+  ;
 
-comp_operator : GT
-              | GE
-              | LT
-              | LE
-              | EQ
-              ;
+lv : IDENTIFIER;
 
-arithmetic_expr
- : arithmetic_expr MULT arithmetic_expr  # ArithmeticExpressionMult
- | arithmetic_expr DIV arithmetic_expr   # ArithmeticExpressionDiv
- | arithmetic_expr PLUS arithmetic_expr  # ArithmeticExpressionPlus
- | arithmetic_expr MINUS arithmetic_expr # ArithmeticExpressionMinus
- | MINUS arithmetic_expr                 # ArithmeticExpressionNegation
- | LPAREN arithmetic_expr RPAREN         # ArithmeticExpressionParens
- | numeric_entity                        # ArithmeticExpressionNumericEntity
- ;
+e
+  : arith
+  | cond
+  | LPAREN e RPAREN
+  | lv
+  ;
 
-logical_entity : (TRUE | FALSE) # LogicalConst
-               | IDENTIFIER     # LogicalVariable
-               ;
+arith
+  : MINUS arith
+  | arith PLUS arith
+  | arith MINUS arith
+  | arith MULT arith
+  | arith DIV arith
+  | DECIMAL
+  ;
 
-numeric_entity : DECIMAL              # NumericConst
-               | IDENTIFIER           # NumericVariable
-               ;
+cond
+  : NOT cond
+  | e EQ e
+  | e NE e
+  | arith LT arith
+  | arith GT arith
+  | arith LE arith
+  | arith GE arith
+  | cond AND cond
+  | cond OR cond
+  | TRUE
+  | FALSE
+  ;
+

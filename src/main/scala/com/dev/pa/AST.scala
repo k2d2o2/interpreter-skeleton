@@ -1,48 +1,50 @@
 package com.dev.pa
 
-case class AST(stmtList: List[Stmt])
+object AST {
 
-sealed abstract class Stmt
+  case class Program(funcList: List[Func], mainFunc: Func)
 
-case class IfStmt(condition: Condition, conclusion: Conclusion) extends Stmt
+  case class Func(name: String, params: List[Param], body: Block)
 
-sealed abstract class Condition
+  type Param = List[String]
 
-sealed abstract class LogicalExpr extends Condition
+  type Block = List[Stmt]
 
-case class AndExpr(l: LogicalExpr, r: LogicalExpr) extends LogicalExpr
-case class OrExpr(l: LogicalExpr, r: LogicalExpr) extends LogicalExpr
-case class CompExpr(l: CompOperand, op: CompOp, r: CompOperand) extends LogicalExpr
-sealed abstract class LogicalEntity extends LogicalExpr
+  sealed abstract class Stmt
 
-sealed abstract class CompOperand
+  case class AssignStmt(lv: LValue, e: Expression) extends Stmt
+  case class IfStmt(cond: Condition, trueBlock: Block, falseBlockOpt: Option[Block]) extends Stmt
+  case class WhileStmt(cond: Condition, block: Block) extends Stmt
+  case class ReturnStmt(e: Expression) extends Stmt
 
-sealed abstract class ArithExpr extends CompOperand
+  sealed abstract class Expression
 
-case class ArithBinOp(l: ArithExpr, op: ArithOp, r: ArithExpr) extends ArithExpr
-case class UnaryMinus(arithExpr: ArithExpr) extends ArithExpr
-sealed abstract class NumEntity extends ArithExpr
+  sealed abstract class Arith extends Expression
+  sealed abstract class Condition extends Expression
+  sealed abstract class LValue extends Expression
 
-case class NumAtom(i: Int) extends NumEntity
-case class NumVar(x: String) extends NumEntity
+  case class Var(x: String) extends LValue
 
-sealed abstract class ArithOp
+  case class UnaryMinus(arith: Arith) extends Arith
+  case class Plus(l: Arith, r: Arith) extends Arith
+  case class Minus(l: Arith, r: Arith) extends Arith
+  case class Mult(l: Arith, r: Arith) extends Arith
+  case class Div(l: Arith, r: Arith) extends Arith
+  case class IntAtom(i: Int) extends Arith
 
-case object Mult extends ArithOp
-case object Div extends ArithOp
-case object Plus extends ArithOp
-case object Minus extends ArithOp
+  case class Not(e: Expression) extends Condition
+  case class Eq(l: Expression, r: Expression) extends Condition
+  case class Ne(l: Expression, r: Expression) extends Condition
+  case class Lt(l: Arith, r: Arith) extends Condition
+  case class Le(l: Arith, r: Arith) extends Condition
+  case class Gt(l: Arith, r: Arith) extends Condition
+  case class Ge(l: Arith, r: Arith) extends Condition
+  case class And(l: Condition, r: Condition) extends Condition
+  case class Or(l: Condition, r: Condition) extends Condition
+  case object True extends Condition
+  case object False extends Condition
 
-sealed abstract class CompOp
+}
 
-case object GT extends CompOp
-case object GE extends CompOp
-case object LT extends CompOp
-case object LE extends CompOp
-case object EQ extends CompOp
 
-case object True extends LogicalEntity
-case object False extends LogicalEntity
-case class LogiVar(x: String) extends LogicalEntity
 
-case class Conclusion(x: String)

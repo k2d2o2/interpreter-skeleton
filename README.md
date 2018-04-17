@@ -13,11 +13,12 @@
   *name* -> string<br/>
   *params* -> **(** variable* **)**<br/>
   *block* -> **{** *stmt** **}** | *stmt*<br/>
-  *stmt* -> *lv*:=*e*<br/>
+  *stmt* -> *lv*:=*e* **;**<br/>
   &nbsp;&nbsp;&nbsp;&nbsp;| **if** **(** *cond* **)** *block* **else** *block*<br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;| **if** **(** *cond* **)** *block* <br/>
   &nbsp;&nbsp;&nbsp;&nbsp;| **while** **(** *cond* **)** *block*<br/>
-  &nbsp;&nbsp;&nbsp;&nbsp;| **return** *e*<br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;| **return** *e* **;**<br/>
   *lv* -> variable<br/>
-  *e* -> *arith* | *cond* | **(** e **)**<br/>
-  *arith* -> *e* **+** *e* | *e* **-** *e* |  *e* **\*** *e* |  *e* **/** *e*  | integer<br/>
-  *cond* -> e **==** e | e **!=** e | *arith* **>** *arith* | *cond* **&&** *cond* | cond **||** cond | **true** | **false**<br/>
+  *e* -> *arith* | *cond* | **(** e **)** | *lv*<br/>
+  *arith* -> **-** *arith* | *arith* **+** *arith* | *arith* **-** *arith* |  *arith* **\*** *arith* |  *arith* **/** *arith*  | integer <br/>
+  *cond* -> **!** *cond* | e **==** e | e **!=** e | *arith* **>** *arith* | *cond* **&&** *cond* | cond **||** cond | **true** | **false** <br/>
