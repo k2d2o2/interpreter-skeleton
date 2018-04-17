@@ -6,7 +6,7 @@
 
 ## Target Language
 ### Syntax
-  *program* -> *function** main-*function*
+  *program* -> *function** main-*function*<br/>
   *function* -> **def** *name* *params* **:=** *block*
   *name* -> string
   *params* -> **(** variable* **)**
