@@ -1,0 +1,12 @@
+project/boot
+project/plugins/project
+target
+lib_managed
+src_managed
+.DS_Store
+.ensime
+.idea/
+.idea_modules/
+*.iml
+dependency-reduced-pom.xml
+temp
