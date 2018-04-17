@@ -7,15 +7,15 @@
 ## Target Language
 ### Syntax
   *program* -> *function** main-*function*<br/>
-  *function* -> **def** *name* *params* **:=** *block*
-  *name* -> string
-  *params* -> **(** variable* **)**
-  *block* -> **{** *stmt** **}** | *stmt*
-  *stmt* -> *lv*:=*e*
-  &nbsp;&nbsp;&nbsp;&nbsp;| **if** **(** *cond* **)** *block* **else** *block*
-  &nbsp;&nbsp;&nbsp;&nbsp;| **while** **(** *cond* **)** *block*
-  &nbsp;&nbsp;&nbsp;&nbsp;| **return** *e*
-  *lv* -> variable
-  *e* -> *arith* | *cond* | **(** e **)**
-  *arith* -> *e* **+** *e* | *e* **-** *e* |  *e* **\*** *e* |  *e* **/** *e*  | integer
-  *cond* -> e **==** e | e **!=** e | *arith* **>** *arith* | *cond* **&&** *cond* | cond **||** cond | **true** | **false**
+  *function* -> **def** *name* *params* **:=** *block*<br/>
+  *name* -> string<br/>
+  *params* -> **(** variable* **)**<br/>
+  *block* -> **{** *stmt** **}** | *stmt*<br/>
+  *stmt* -> *lv*:=*e*<br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;| **if** **(** *cond* **)** *block* **else** *block*<br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;| **while** **(** *cond* **)** *block*<br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;| **return** *e*<br/>
+  *lv* -> variable<br/>
+  *e* -> *arith* | *cond* | **(** e **)**<br/>
+  *arith* -> *e* **+** *e* | *e* **-** *e* |  *e* **\*** *e* |  *e* **/** *e*  | integer<br/>
+  *cond* -> e **==** e | e **!=** e | *arith* **>** *arith* | *cond* **&&** *cond* | cond **||** cond | **true** | **false**<br/>
