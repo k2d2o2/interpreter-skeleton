@@ -1,0 +1,12 @@
+
+
+def foo(x) := {
+  return x;
+}
+
+def main() := {
+  x:=1;
+  y:=2;
+  z:= x + y;
+  w:= z;
+}

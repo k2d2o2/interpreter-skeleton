@@ -79,7 +79,7 @@ stmt
   | IF LPAREN cond RPAREN block ELSE block
   | IF LPAREN cond RPAREN block
   | WHILE LPAREN cond RPAREN block
-  | RETURN e
+  | RETURN e SEMI
   ;
 
 lv : IDENTIFIER;
@@ -98,6 +98,7 @@ arith
   | arith MULT arith
   | arith DIV arith
   | DECIMAL
+  | lv
   ;
 
 cond
@@ -114,5 +115,6 @@ cond
   | cond OR cond
   | TRUE
   | FALSE
+  | lv
   ;
 
