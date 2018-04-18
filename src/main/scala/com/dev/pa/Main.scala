@@ -15,11 +15,8 @@ object Main {
     val stream = new BufferedTokenStream(lexer)
     val parser = new MyGrammarParser(stream)
     val x: MyGrammarParser.ProgramContext = parser.program()
-
-    x
-//    val ast: AST = (new Translator).transRuleSet(x)
-//    ast
-//    logger info ast.toString
-//    logger debug ast.toString
+    val ast: AST.Program = Translator.transProgram(x)
+    logger info ast.toString
+    logger debug ast.toString
   }
 }

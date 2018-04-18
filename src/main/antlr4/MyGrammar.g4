@@ -75,46 +75,46 @@ block
   ;
 
 stmt
-  : lv ASSIGN e SEMI
-  | IF LPAREN cond RPAREN block ELSE block
-  | IF LPAREN cond RPAREN block
-  | WHILE LPAREN cond RPAREN block
-  | RETURN e SEMI
+  : lv ASSIGN e SEMI #AssignStmt
+  | IF LPAREN cond RPAREN block ELSE block #IfElseStmt
+  | IF LPAREN cond RPAREN block #IfStmt
+  | WHILE LPAREN cond RPAREN block #WhileStmt
+  | RETURN e SEMI #ReturnStmt
   ;
 
 lv : IDENTIFIER;
 
 e
-  : arith
-  | cond
-  | LPAREN e RPAREN
-  | lv
+  : lv #ELv
+  | arith #ArithE
+  | cond #CondE
+  | LPAREN e RPAREN #EInParen
   ;
 
 arith
-  : MINUS arith
-  | arith PLUS arith
-  | arith MINUS arith
-  | arith MULT arith
-  | arith DIV arith
-  | DECIMAL
-  | lv
+  : MINUS arith #MinusArith
+  | arith PLUS arith #ArithBinPlus
+  | arith MINUS arith #ArithBinMinus
+  | arith MULT arith #ArithBinMult
+  | arith DIV arith #ArithBinDiv
+  | DECIMAL #Dec
+  | lv #ArithLv
   ;
 
 cond
-  : NOT cond
-  | arith EQ arith
-  | arith NE arith
-  | cond EQ cond
-  | cond NE cond
-  | arith LT arith
-  | arith GT arith
-  | arith LE arith
-  | arith GE arith
-  | cond AND cond
-  | cond OR cond
-  | TRUE
-  | FALSE
-  | lv
+  : NOT cond #NotCond
+  | arith EQ arith #ArithBinEq
+  | arith NE arith #ArithBinNe
+  | cond EQ cond #CondBinEq
+  | cond NE cond #CondBinNe
+  | arith LT arith #ArithBinLt
+  | arith GT arith #ArithBinGt
+  | arith LE arith #ArithBinLe
+  | arith GE arith #ArithBinGe
+  | cond AND cond #CondBinAnd
+  | cond OR cond #CondBinOr
+  | TRUE #CondTrue
+  | FALSE #CondFalse
+  | lv #CondLv
   ;
 

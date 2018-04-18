@@ -21,5 +21,5 @@
   &nbsp;&nbsp;&nbsp;&nbsp;| **return** *e* **;**<br/>
   *lv* -> variable<br/>
   *e* -> *arith* | *cond* | **(** e **)** | *lv*<br/>
-  *arith* -> **-** *arith* | *arith* **+** *arith* | *arith* **-** *arith* |  *arith* **\*** *arith* |  *arith* **/** *arith*  | integer <br/>
-  *cond* -> **!** *cond* | e **==** e | e **!=** e | *arith* **>** *arith* | *cond* **&&** *cond* | cond **||** cond | **true** | **false** <br/>
+  *arith* -> **-** *arith* | *arith* **+** *arith* | *arith* **-** *arith* |  *arith* **\*** *arith* |  *arith* **/** *arith*  | integer | *lv* <br/>
+  *cond* -> **!** *cond* | e **==** e | e **!=** e | *arith* **>** *arith* | *cond* **&&** *cond* | cond **||** cond | **true** | **false** | *lv* <br/>

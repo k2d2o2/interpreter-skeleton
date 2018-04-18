@@ -6,7 +6,7 @@ object AST {
 
   case class Func(name: String, params: List[Param], body: Block)
 
-  type Param = List[String]
+  type Param = String
 
   type Block = List[Stmt]
 
@@ -23,7 +23,7 @@ object AST {
   sealed abstract class Condition extends Expression
   sealed abstract class LValue extends Expression
 
-  case class Var(x: String) extends LValue
+  case class Variable(x: String) extends LValue
 
   case class UnaryMinus(arith: Arith) extends Arith
   case class Plus(l: Arith, r: Arith) extends Arith
@@ -31,8 +31,9 @@ object AST {
   case class Mult(l: Arith, r: Arith) extends Arith
   case class Div(l: Arith, r: Arith) extends Arith
   case class IntAtom(i: Int) extends Arith
+  case class ArithLv(lv: LValue) extends Arith
 
-  case class Not(e: Expression) extends Condition
+  case class Not(cond: Condition) extends Condition
   case class Eq(l: Expression, r: Expression) extends Condition
   case class Ne(l: Expression, r: Expression) extends Condition
   case class Lt(l: Arith, r: Arith) extends Condition
@@ -43,6 +44,7 @@ object AST {
   case class Or(l: Condition, r: Condition) extends Condition
   case object True extends Condition
   case object False extends Condition
+  case class CondLv(lv: LValue) extends Condition
 
 }
 
