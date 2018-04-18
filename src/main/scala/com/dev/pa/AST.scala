@@ -18,6 +18,7 @@ object AST {
   case class IfStmt(cond: Expression, trueBlock: Block, falseBlockOpt: Option[Block]) extends Stmt
   case class WhileStmt(cond: Expression, block: Block) extends Stmt
   case class ReturnStmt(e: Expression) extends Stmt
+  case class PrintStmt(e: Expression) extends Stmt
   case class CallStmt(retLv: TempVariable, name: funcName, args: List[Expression]) extends Stmt
 
   sealed abstract class Expression

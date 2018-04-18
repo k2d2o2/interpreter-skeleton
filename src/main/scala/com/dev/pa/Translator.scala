@@ -44,6 +44,10 @@ class Translator {
         val trueBlock = transBlock(stmt.block())
         b :+ IfStmt(cond, trueBlock, None)
       }
+      case stmt: PrintStmtContext => {
+        val (b, e) = transE(stmt.e())
+        b :+ PrintStmt(e)
+      }
       case stmt: IfElseStmtContext => {
         val (b, cond) = transCond(stmt.cond())
         val trueBlock = transBlock(stmt.block(0))

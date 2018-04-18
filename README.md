@@ -19,6 +19,16 @@
   &nbsp;&nbsp;&nbsp;&nbsp;| **if** **(** *e* **)** *block* <br/>
   &nbsp;&nbsp;&nbsp;&nbsp;| **while** **(** *e* **)** *block*<br/>
   &nbsp;&nbsp;&nbsp;&nbsp;| **return** *e* **;**<br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;| **print** *e* **;**<br/>
   *e* -> **(** e **)** | *arith* | **!** *e* | e **==** e | e **!=** e | *arith* **>** *arith* | *e* **&&** *e* | e **||** e | **true** | **false** <br/>
   *arith* -> **-** *arith* | *arith* **+** *arith* | *arith* **-** *arith* |  *arith* **\*** *arith* |  *arith* **/** *arith*  | integer | *lv* | f **(** *lv* **)** <br/>
   *lv* -> variable<br/>
+
+### AST
+  * See com.dev.pa.AST
+
+### Semantics
+  * intuitive
+
+### TODO
+  * make interpreter for PA1 by completing **TODO** s

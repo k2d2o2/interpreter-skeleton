@@ -11,4 +11,5 @@ def main() := {
   z:= x + y;
   w:= z;
   s := foo(true);
+  print s;
 }
