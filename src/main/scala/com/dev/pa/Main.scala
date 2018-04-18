@@ -11,10 +11,12 @@ object Main {
     val lexer = new MyGrammarLexer(charStream)
     val stream = new BufferedTokenStream(lexer)
     val parser = new MyGrammarParser(stream)
-    val x: MyGrammarParser.Rule_setContext = parser.rule_set()
-    val ast: AST = (new Translator).transRuleSet(x)
-    ast
-    logger info ast.toString
-    logger debug ast.toString
+    val x: MyGrammarParser.ProgramContext = parser.program()
+
+    x
+//    val ast: AST = (new Translator).transRuleSet(x)
+//    ast
+//    logger info ast.toString
+//    logger debug ast.toString
   }
 }
