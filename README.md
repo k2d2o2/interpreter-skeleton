@@ -15,11 +15,10 @@
   *params* -> **(** variable* **)**<br/>
   *block* -> **{** *stmt** **}** | *stmt*<br/>
   *stmt* -> *lv*:=*e* **;**<br/>
-  &nbsp;&nbsp;&nbsp;&nbsp;| **if** **(** *cond* **)** *block* **else** *block*<br/>
-  &nbsp;&nbsp;&nbsp;&nbsp;| **if** **(** *cond* **)** *block* <br/>
-  &nbsp;&nbsp;&nbsp;&nbsp;| **while** **(** *cond* **)** *block*<br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;| **if** **(** *e* **)** *block* **else** *block*<br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;| **if** **(** *e* **)** *block* <br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;| **while** **(** *e* **)** *block*<br/>
   &nbsp;&nbsp;&nbsp;&nbsp;| **return** *e* **;**<br/>
+  *e* -> **(** e **)** | *arith* | **!** *e* | e **==** e | e **!=** e | *arith* **>** *arith* | *e* **&&** *e* | e **||** e | **true** | **false** <br/>
+  *arith* -> **-** *arith* | *arith* **+** *arith* | *arith* **-** *arith* |  *arith* **\*** *arith* |  *arith* **/** *arith*  | integer | *lv* | f **(** *lv* **)** <br/>
   *lv* -> variable<br/>
-  *e* -> *arith* | *cond* | **(** e **)** | *lv*<br/>
-  *arith* -> **-** *arith* | *arith* **+** *arith* | *arith* **-** *arith* |  *arith* **\*** *arith* |  *arith* **/** *arith*  | integer | *lv* <br/>
-  *cond* -> **!** *cond* | e **==** e | e **!=** e | *arith* **>** *arith* | *cond* **&&** *cond* | cond **||** cond | **true** | **false** | *lv* <br/>

@@ -85,11 +85,11 @@ stmt
 lv : IDENTIFIER;
 
 e
-  : lv #ELv
-  | arith #ArithE
-  | cond #CondE
+  : cond #CondE
   | LPAREN e RPAREN #EInParen
   ;
+
+args: e*;
 
 arith
   : MINUS arith #MinusArith
@@ -98,7 +98,8 @@ arith
   | arith MULT arith #ArithBinMult
   | arith DIV arith #ArithBinDiv
   | DECIMAL #Dec
-  | lv #ArithLv
+  | IDENTIFIER LPAREN args RPAREN #ECall
+  | lv #ELv
   ;
 
 cond
@@ -115,6 +116,6 @@ cond
   | cond OR cond #CondBinOr
   | TRUE #CondTrue
   | FALSE #CondFalse
-  | lv #CondLv
+  | arith #ArithE
   ;
 
