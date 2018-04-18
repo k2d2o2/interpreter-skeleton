@@ -3,7 +3,7 @@
  * Install Antlr4 plugin
  * Run "./sbt compile" or "sbt.bat - compile" or "compile" using sbt shell
  * Unmark source target/scala-2.12/src_managed/main/antlr4 in File - Project Structure - Modules if you want to build project with intellij
-  * you should do this job every time you refresh sbt in Intellij
+   * you should do this job every time you refresh sbt in Intellij
 
 ## Target Language
 ### extension
