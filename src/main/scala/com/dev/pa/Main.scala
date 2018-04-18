@@ -1,5 +1,7 @@
 package com.dev.pa
 
+import java.io.File
+
 import com.typesafe.scalalogging.Logger
 import org.antlr.v4.runtime._
 
@@ -7,7 +9,8 @@ import org.antlr.v4.runtime._
 object Main {
   val logger = Logger("Main")
   def main(args: Array[String]): Unit = {
-    val charStream = CharStreams.fromString("if true and true or true then abcd;")
+    val sourceFile = new File("src/test/pa1/test1.pa1")
+    val charStream = CharStreams.fromFileName(sourceFile.getCanonicalPath)
     val lexer = new MyGrammarLexer(charStream)
     val stream = new BufferedTokenStream(lexer)
     val parser = new MyGrammarParser(stream)
