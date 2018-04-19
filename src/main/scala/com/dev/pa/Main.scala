@@ -9,7 +9,13 @@ import org.antlr.v4.runtime._
 object Main {
   val logger = Logger("Main")
   def main(args: Array[String]): Unit = {
-    val sourceFile = new File("src/test/pa1/test1.pa1")
+    val (_, remainingArgs) = OptionParser.parse(args)
+
+    // get interpreter args
+    val sourceCodePath: String = remainingArgs.headOption.getOrElse("src/test/pa1/test1.pa1")
+    val argsForCode: List[String] = remainingArgs.drop(1)
+
+    val sourceFile = new File(sourceCodePath)
     val charStream = CharStreams.fromFileName(sourceFile.getCanonicalPath)
     val lexer = new MyGrammarLexer(charStream)
     val stream = new BufferedTokenStream(lexer)
@@ -17,5 +23,7 @@ object Main {
     val x: MyGrammarParser.ProgramContext = parser.program()
     val ast: AST.Program = (new Translator).transProgram(x)
     logger info ast.toString
+    (new Interpreter).run(ast, argsForCode)
+    logger info "Program terminated."
   }
 }

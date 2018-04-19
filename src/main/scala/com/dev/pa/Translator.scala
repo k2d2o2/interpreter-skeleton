@@ -64,6 +64,10 @@ class Translator {
         val (b, e) = transE(stmt.e())
         b :+ AssignStmt(lv, e)
       }
+      case stmt: ReadlineStmtContext => {
+        val lv = transLv(stmt.lv())
+        List(ReadLineStmt(lv))
+      }
       case stmt: ReturnStmtContext => {
         val (b, e) = transE(stmt.e())
         b :+ ReturnStmt(e)

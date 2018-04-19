@@ -1,0 +1,7 @@
+
+
+def main() := {
+  input x;
+  input y;
+  print x+y+1;
+}

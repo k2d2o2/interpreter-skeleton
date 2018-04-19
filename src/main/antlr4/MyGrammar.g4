@@ -16,6 +16,7 @@ ELSE : 'else' ;
 WHILE: 'while';
 RETURN: 'return';
 PRINT: 'print';
+READLINE: 'input';
 
 AND : '&&' ;
 OR  : '||' ;
@@ -82,6 +83,7 @@ stmt
   | WHILE LPAREN cond RPAREN block #WhileStmt
   | RETURN e SEMI #ReturnStmt
   | PRINT e SEMI #PrintStmt
+  | READLINE lv SEMI #ReadlineStmt
   ;
 
 lv : IDENTIFIER;

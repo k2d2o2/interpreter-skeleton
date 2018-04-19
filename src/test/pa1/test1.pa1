@@ -2,7 +2,7 @@
 
 def foo(x) := {
   if (x) y:=!x; else y:=x;
-  return x;
+  return y;
 }
 
 def main() := {
