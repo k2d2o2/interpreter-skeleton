@@ -35,14 +35,14 @@ class Interpreter(private val sic: SourceInfoCarrier) {
   def runFunc(function: Func, args: List[PA1Value], memory: Memory): Memory = {
     val params = function.params
     if (params.length == args.length) {
-      val argsMapedMemory = {
+      val argsMappedMemory = {
         params.zip(args).foldLeft(memory) {
           case (memory1, (param, v)) =>
             val l = evaluateParam(param)
             memory1.store(l, v)
         }
       }
-      runBlock(function.body, argsMapedMemory)
+      runBlock(function.body, argsMappedMemory)
     }
     else {
       throw PA1Exception(
