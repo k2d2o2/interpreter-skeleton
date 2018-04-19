@@ -12,7 +12,8 @@ object Main {
     val (_, remainingArgs) = OptionParser.parse(args)
 
     // get interpreter args
-    val sourceCodePath: String = remainingArgs.headOption.getOrElse("src/test/pa1/test1.pa1")
+    val sourceCodePath: String = remainingArgs.headOption.getOrElse("src/test/pa1/test3.pa1")
+    logger info "Start program %s".format(sourceCodePath)
     val argsForCode: List[String] = remainingArgs.drop(1)
 
     val sourceFile = new File(sourceCodePath)
@@ -22,7 +23,7 @@ object Main {
     val parser = new MyGrammarParser(stream)
     val x: MyGrammarParser.ProgramContext = parser.program()
     val ast: AST.Program = (new Translator).transProgram(x)
-    logger info ast.toString
+    logger debug ast.toString
     (new Interpreter).run(ast, argsForCode)
     logger info "Program terminated."
   }
