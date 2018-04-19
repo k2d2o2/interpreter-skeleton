@@ -37,7 +37,7 @@
 ### Semantics
   * intuitive
 
-## TODO
+## Goal
   * Complete the PA1 interpreter code by implementing **???** s
   * This tutorial may help those who are not familiar with Scala.
     * <https://www.scala-exercises.org/scala_tutorial/terms_and_types>
