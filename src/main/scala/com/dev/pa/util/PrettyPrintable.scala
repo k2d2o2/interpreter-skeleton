@@ -15,6 +15,7 @@ object PrettyPrintable {
       case l: List[_] => l.map(prettyStr).mkString("[", ";", "]")
       case opt: Option[_] => opt.map(prettyStr).getOrElse("null")
       case MapExtractor(m @ _*) => m.map{case (k, v) => prettyStr(k) + "->" + prettyStr(v)}.mkString("[", ";","]")
+      case prod1: Product if prod1.productArity == 1 => prettyStr(prod1.productElement(0))
       case prod: Product => {
         val iter = prod.productIterator
         iter.map(prettyStr).mkString("(", ",", ")")
