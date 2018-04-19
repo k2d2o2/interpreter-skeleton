@@ -1,6 +1,6 @@
 package com.dev.pa
 
-import com.dev.pa.SourceInfoCarrier.{SourceInfo, Tag}
+import com.dev.pa.SourceInfoCarrier.Tag
 
 object AST {
 
