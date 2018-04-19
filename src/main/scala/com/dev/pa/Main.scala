@@ -12,7 +12,7 @@ object Main {
     val (_, remainingArgs) = OptionParser.parse(args)
 
     // get interpreter args
-    val sourceCodePath: String = remainingArgs.headOption.getOrElse("src/test/pa1/test3.pa1")
+    val sourceCodePath: String = remainingArgs.headOption.getOrElse("test/pa1/test3.pa1")
     logger info "Start program %s".format(sourceCodePath)
     val argsForCode: List[String] = remainingArgs.drop(1)
 
