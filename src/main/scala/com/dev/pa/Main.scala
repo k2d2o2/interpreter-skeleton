@@ -22,9 +22,9 @@ object Main {
     val stream = new BufferedTokenStream(lexer)
     val parser = new MyGrammarParser(stream)
     val x: MyGrammarParser.ProgramContext = parser.program()
-    val ast: AST.Program = (new Translator).transProgram(x)
+    val (ast: AST.Program, sourceInfoCarrier: SourceInfoCarrier) = (new Translator).transProgram(x)
     logger debug ast.toString
-    (new Interpreter).run(ast, argsForCode)
+    new Interpreter(sourceInfoCarrier).run(ast, argsForCode)
     logger info "Program terminated."
   }
 }

@@ -2,14 +2,15 @@ package com.dev.pa
 
 import com.dev.pa.AST._
 import com.dev.pa.MemoryModel._
+import com.dev.pa.SourceInfoCarrier.Tag
 import com.dev.pa.util.{PrettyPrintable, Printer}
 
 import scala.io.StdIn
 import scala.util.Try
 
-class Interpreter {
+class Interpreter(private val sic: SourceInfoCarrier) {
 
-  case class PA1Exception(msg: String) extends Exception
+  case class PA1Exception(msg: String, tag: Tag) extends Exception
 
   def run(program: Program, inputs: List[String]): Unit = {
     try {
@@ -19,14 +20,14 @@ class Interpreter {
       val mainFunction = program.mainFunc
       // parse arguments
       val args: List[PA1Value] = inputs.map {
-        argStr => evaluateInput(argStr)
+        argStr => evaluateInput(argStr, mainFunction.tag)
       }
       // run main function
       runFunc(mainFunction, args, initMemory)
     }
     catch {
       case e: PA1Exception =>
-        Printer.println("[Error] %s".format(e.msg))
+        Printer.println("[%s:%s][Error] %s".format(sic.getLine(e.tag), sic.getCharPoint(e.tag), e.msg))
     }
   }
 
@@ -46,7 +47,8 @@ class Interpreter {
     else {
       throw PA1Exception(
         "Invalid argument. params: %s, args: %s"
-          .format(PrettyPrintable.prettyStr(params), PrettyPrintable.prettyStr(args))
+          .format(PrettyPrintable.prettyStr(params), PrettyPrintable.prettyStr(args)),
+        function.tag
       )
     }
   }
@@ -66,9 +68,9 @@ class Interpreter {
     if (memory.hasReturn) memory
     else {
       stmt match {
-        case AssignStmt(lv: LValue, e: Expression) => ???
-        case IfStmt(cond: Expression, trueBlock: Block, Some(falseBlock)) => ???
-        case IfStmt(cond: Expression, trueBlock: Block, None) => {
+        case AssignStmt(lv: LValue, e: Expression, tag: Tag) => ???
+        case IfStmt(cond: Expression, trueBlock: Block, Some(falseBlock), tag: Tag) => ???
+        case IfStmt(cond: Expression, trueBlock: Block, None, tag: Tag) => {
           val condValue = evaluateExpression(cond, memory)
           condValue match {
             case BoolVal(true) => {
@@ -79,33 +81,34 @@ class Interpreter {
             }
             case v => {
               throw PA1Exception(
-                "Invalid condition value: %s".format(v.prettyStr)
+                "Invalid condition value: %s".format(v.prettyStr),
+                tag
               )
             }
           }
         }
           // Attension: do not use foldLeft interpreting while statement for tail recursion.
-        case WhileStmt(cond: Expression, block: Block) => ???
-        case ReturnStmt(e: Expression) => {
+        case WhileStmt(cond: Expression, block: Block, tag: Tag) => ???
+        case ReturnStmt(e: Expression, tag: Tag) => {
           val v = evaluateExpression(e, memory)
           memory.storeReturn(v)
         }
-        case PrintStmt(e: Expression) => {
+        case PrintStmt(e: Expression, tag: Tag) => {
           val v = evaluateExpression(e, memory)
           Printer.println(v.prettyStr)
           memory
         }
-        case ReadLineStmt(lv: LValue) => {
+        case ReadLineStmt(lv: LValue, tag: Tag) => {
           val l = evaluateLValue(lv)
           val v = {
             Printer.print("INPUT: ")
             val input = StdIn.readLine()
-            evaluateInput(input)
+            evaluateInput(input, tag)
           }
           memory.store(l, v)
         }
           // Our semantics: storing return value is responsible for caller.
-        case CallStmt(retLv: TempVariable, name: funcName, args: List[Expression]) => {
+        case CallStmt(retLv: TempVariable, name: funcName, args: List[Expression], tag: Tag) => {
           val functionOpt = memory.lookupFunction(name)
           functionOpt match {
             case Some(function) => {
@@ -122,7 +125,8 @@ class Interpreter {
             }
             case None =>
               throw PA1Exception(
-                "Invalid function call: %s".format(name)
+                "Invalid function call: %s".format(name),
+                tag
               )
           }
         }
@@ -130,55 +134,55 @@ class Interpreter {
     }
   }
 
-  def evaluateInput(input: String): PA1Value = {
+  def evaluateInput(input: String, tag: Tag): PA1Value = {
     Try(IntVal(input.toInt))
       .recover { case e: NumberFormatException =>
         BoolVal(input.toBoolean)
       }
       .recover { case e: IllegalArgumentException =>
-        throw PA1Exception("Illegal argument: %s".format(input))
+        throw PA1Exception("Illegal argument: %s".format(input), tag)
       }.get
   }
 
   def evaluateExpression(expression: Expression, memory: Memory): PA1Value = {
     expression match {
-      case Not(cond: Expression) => ???
-      case Eq(l: Expression, r: Expression) => ???
-      case Ne(l: Expression, r: Expression) => ???
-      case Lt(l: Arith, r: Arith) => ???
-      case Le(l: Arith, r: Arith) => ???
-      case Gt(l: Arith, r: Arith) => ???
-      case Ge(l: Arith, r: Arith) => ???
-      case And(l: Expression, r: Expression) => ???
-      case Or(l: Expression, r: Expression) => ???
-      case True => ???
-      case False => ???
+      case Not(cond: Expression, tag: Tag) => ???
+      case Eq(l: Expression, r: Expression, tag: Tag) => ???
+      case Ne(l: Expression, r: Expression, tag: Tag) => ???
+      case Lt(l: Arith, r: Arith, tag: Tag) => ???
+      case Le(l: Arith, r: Arith, tag: Tag) => ???
+      case Gt(l: Arith, r: Arith, tag: Tag) => ???
+      case Ge(l: Arith, r: Arith, tag: Tag) => ???
+      case And(l: Expression, r: Expression, tag: Tag) => ???
+      case Or(l: Expression, r: Expression, tag: Tag) => ???
+      case True(tag: Tag) => ???
+      case False(tag: Tag) => ???
       case arith: Arith => evaluateArith(arith, memory)
     }
   }
 
   def evaluateArith(arith: Arith, memory: Memory): PA1Value = {
     arith match {
-      case UnaryMinus(arith: Arith) => ???
-      case Plus(l: Arith, r: Arith) => {
+      case UnaryMinus(arith: Arith, tag: Tag) => ???
+      case Plus(l: Arith, r: Arith, tag: Tag) => {
         val v1 = evaluateArith(l, memory)
         val v2 = evaluateArith(r, memory)
         (v1, v2) match {
           case (IntVal(i1), IntVal(i2)) => IntVal(i1 + i2)
-          case _ => throw PA1Exception("Cannot add %s, %s".format(v1.prettyStr, v2.prettyStr))
+          case _ => throw PA1Exception("Cannot add %s, %s".format(v1.prettyStr, v2.prettyStr), tag)
         }
       }
-      case Minus(l: Arith, r: Arith) => ???
-      case Mult(l: Arith, r: Arith) => ???
-      case Div(l: Arith, r: Arith) => ???
-      case IntAtom(i: Int) => IntVal(i)
+      case Minus(l: Arith, r: Arith, tag: Tag) => ???
+      case Mult(l: Arith, r: Arith, tag: Tag) => ???
+      case Div(l: Arith, r: Arith, tag: Tag) => ???
+      case IntAtom(i: Int, tag: Tag) => IntVal(i)
       case lv: LValue => {
         val l: Location = evaluateLValue(lv)
         val v: PA1Value = {
           memory.lookup(l) match {
             case Some(v1) => v1
             case None =>
-              throw PA1Exception("Invalid memory location: %s".format(l.prettyStr))
+              throw PA1Exception("Invalid memory location: %s".format(l.prettyStr), lv.tag)
           }
         }
         v
@@ -188,8 +192,8 @@ class Interpreter {
 
   def evaluateLValue(value: LValue): Location = {
     value match {
-      case Variable(x) => VarLoc(x)
-      case TempVariable(x) => VarLoc(x)
+      case Variable(x, tag: Tag) => VarLoc(x)
+      case TempVariable(x, tag: Tag) => VarLoc(x)
     }
   }
 

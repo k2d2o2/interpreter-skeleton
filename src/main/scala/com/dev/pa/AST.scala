@@ -1,10 +1,12 @@
 package com.dev.pa
 
+import com.dev.pa.SourceInfoCarrier.{SourceInfo, Tag}
+
 object AST {
 
   case class Program(funcList: List[Func], mainFunc: Func)
 
-  case class Func(name: funcName, params: List[Param], body: Block)
+  case class Func(name: funcName, params: List[Param], body: Block, tag: Tag)
 
   type funcName = String
 
@@ -12,43 +14,83 @@ object AST {
 
   type Block = List[Stmt]
 
-  sealed abstract class Stmt
+  sealed abstract class Stmt { val tag: Tag }
 
-  case class AssignStmt(lv: LValue, e: Expression) extends Stmt
-  case class IfStmt(cond: Expression, trueBlock: Block, falseBlockOpt: Option[Block]) extends Stmt
-  case class WhileStmt(cond: Expression, block: Block) extends Stmt
-  case class ReturnStmt(e: Expression) extends Stmt
-  case class PrintStmt(e: Expression) extends Stmt
-  case class ReadLineStmt(lv: LValue) extends Stmt
-  case class CallStmt(retLv: TempVariable, name: funcName, args: List[Expression]) extends Stmt
+  case class AssignStmt(lv: LValue, e: Expression, tag: Tag) extends Stmt
+  case class IfStmt(cond: Expression, trueBlock: Block, falseBlockOpt: Option[Block], tag: Tag) extends Stmt
+  case class WhileStmt(cond: Expression, block: Block, tag: Tag) extends Stmt
+  case class ReturnStmt(e: Expression, tag: Tag) extends Stmt
+  case class PrintStmt(e: Expression, tag: Tag) extends Stmt
+  case class ReadLineStmt(lv: LValue, tag: Tag) extends Stmt
+  case class CallStmt(retLv: TempVariable, name: funcName, args: List[Expression], tag: Tag) extends Stmt
 
-  sealed abstract class Expression
+  sealed abstract class Expression { val tag: Tag }
 
-  case class Variable(x: String) extends LValue
-  case class TempVariable(x: String) extends LValue
+  case class Variable(x: String, tag: Tag) extends LValue
+  case class TempVariable(x: String, tag: Tag) extends LValue
 
-  case class UnaryMinus(arith: Arith) extends Arith
-  case class Plus(l: Arith, r: Arith) extends Arith
-  case class Minus(l: Arith, r: Arith) extends Arith
-  case class Mult(l: Arith, r: Arith) extends Arith
-  case class Div(l: Arith, r: Arith) extends Arith
-  case class IntAtom(i: Int) extends Arith
-  sealed abstract class LValue extends Arith
+  case class UnaryMinus(arith: Arith, tag: Tag) extends Arith
+  case class Plus(l: Arith, r: Arith, tag: Tag) extends Arith
+  case class Minus(l: Arith, r: Arith, tag: Tag) extends Arith
+  case class Mult(l: Arith, r: Arith, tag: Tag) extends Arith
+  case class Div(l: Arith, r: Arith, tag: Tag) extends Arith
+  case class IntAtom(i: Int, tag: Tag) extends Arith
+  sealed abstract class LValue extends Arith { val tag: Tag }
 
-  case class Not(cond: Expression) extends Expression
-  case class Eq(l: Expression, r: Expression) extends Expression
-  case class Ne(l: Expression, r: Expression) extends Expression
-  case class Lt(l: Arith, r: Arith) extends Expression
-  case class Le(l: Arith, r: Arith) extends Expression
-  case class Gt(l: Arith, r: Arith) extends Expression
-  case class Ge(l: Arith, r: Arith) extends Expression
-  case class And(l: Expression, r: Expression) extends Expression
-  case class Or(l: Expression, r: Expression) extends Expression
-  case object True extends Expression
-  case object False extends Expression
-  sealed abstract class Arith extends Expression
+  case class Not(cond: Expression, tag: Tag) extends Expression
+  case class Eq(l: Expression, r: Expression, tag: Tag) extends Expression
+  case class Ne(l: Expression, r: Expression, tag: Tag) extends Expression
+  case class Lt(l: Arith, r: Arith, tag: Tag) extends Expression
+  case class Le(l: Arith, r: Arith, tag: Tag) extends Expression
+  case class Gt(l: Arith, r: Arith, tag: Tag) extends Expression
+  case class Ge(l: Arith, r: Arith, tag: Tag) extends Expression
+  case class And(l: Expression, r: Expression, tag: Tag) extends Expression
+  case class Or(l: Expression, r: Expression, tag: Tag) extends Expression
+  case class True(tag: Tag) extends Expression
+  case class False(tag: Tag) extends Expression
+  sealed abstract class Arith extends Expression { val tag: Tag }
 
 }
 
+
+class SourceInfoCarrier {
+  import SourceInfoCarrier.Tag
+
+  private var idx = 0
+
+  private def newTag(): Tag = {
+    idx += 1
+    idx
+  }
+
+  type map = Map[Tag, SourceInfo]
+  type reverseMap = Map[SourceInfo, Tag]
+  private var tagMap: (map, reverseMap) = (Map.empty, Map.empty)
+
+  def getLine(tag: Tag): Int = tagMap._1.get(tag).map(_.lineNumber).getOrElse(SourceInfoCarrier.dummyLine)
+  def getCharPoint(tag: Tag): Int = tagMap._1.get(tag).map(_.charPoint).getOrElse(SourceInfoCarrier.dummyCharPoint)
+
+  def getTag(lineNumber: Int, charPoint: Int): Tag = {
+    val sourceInfo = SourceInfo(lineNumber, charPoint)
+    tagMap._2.getOrElse(sourceInfo, {
+      val tag = newTag()
+      val map = tagMap._1 + (tag -> sourceInfo)
+      val reverseMap = tagMap._2 + (sourceInfo -> tag)
+      tagMap = (map, reverseMap)
+      tag
+    })
+  }
+}
+
+object SourceInfoCarrier {
+  type Tag = Int
+  val dummyLine: Int = -1
+  val dummyCharPoint: Int = -1
+  case class SourceInfo
+  (
+    lineNumber: Int,
+    charPoint: Int
+  )
+}
 
 
