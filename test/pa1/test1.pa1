@@ -1,7 +1,7 @@
 
 
-def foo(x) := {
-  if (x) y:=!x; else y:=x;
+def foo(x, w) := {
+  if (!x) y:=x; else y:=w;
   return y;
 }
 
@@ -10,6 +10,6 @@ def main() := {
   y:=2;
   z:= x + y;
   w:= z;
-  s := foo(true);
+  s := foo(true, w);
   print s;
 }

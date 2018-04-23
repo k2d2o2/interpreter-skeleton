@@ -44,6 +44,8 @@ RPAREN : ')' ;
 LBRACK: '{';
 RBRACK: '}';
 
+COMMA: ',';
+
 // DECIMAL, IDENTIFIER, COMMENTS, WS are set using regular expressions
 
 DECIMAL : '-'?[0-9]+('.'[0-9]+)? ;
@@ -69,7 +71,10 @@ function: DEF IDENTIFIER LPAREN params RPAREN ASSIGN block;
 
 params: param*;
 
-param: IDENTIFIER;
+param
+  : IDENTIFIER
+  | IDENTIFIER COMMA
+  ;
 
 block
   : LBRACK stmt* RBRACK
@@ -93,7 +98,12 @@ e
   | LPAREN e RPAREN #EInParen
   ;
 
-args: e*;
+args: arg*;
+
+arg
+  : e
+  | e COMMA
+  ;
 
 arith
   : MINUS arith #MinusArith

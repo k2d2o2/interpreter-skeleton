@@ -1,14 +1,16 @@
 package com.dev.pa
 
+import java.io.{BufferedReader, PrintStream}
+
 import com.dev.pa.AST._
 import com.dev.pa.MemoryModel._
 import com.dev.pa.SourceInfoCarrier.Tag
-import com.dev.pa.util.{PrettyPrintable, Printer}
+import com.dev.pa.util.PrettyPrintable
 
 import scala.io.StdIn
 import scala.util.Try
 
-class Interpreter(private val sic: SourceInfoCarrier) {
+class Interpreter(private val sic: SourceInfoCarrier, inC: BufferedReader, outC: PrintStream) {
 
   case class PA1Exception(msg: String, tag: Tag) extends Exception
 
@@ -27,7 +29,7 @@ class Interpreter(private val sic: SourceInfoCarrier) {
     }
     catch {
       case e: PA1Exception =>
-        Printer.println("[%s:%s][Error] %s".format(sic.getLine(e.tag), sic.getCharPoint(e.tag), e.msg))
+        outC.println("[%s:%s][Error] %s".format(sic.getLine(e.tag), sic.getCharPoint(e.tag), e.msg))
     }
   }
 
@@ -95,14 +97,14 @@ class Interpreter(private val sic: SourceInfoCarrier) {
         }
         case PrintStmt(e: Expression, tag: Tag) => {
           val v = evaluateExpression(e, memory)
-          Printer.println(v.prettyStr)
+          outC.println(v.prettyStr)
           memory
         }
         case ReadLineStmt(lv: LValue, tag: Tag) => {
           val l = evaluateLValue(lv)
           val v = {
-            Printer.print("INPUT: ")
-            val input = StdIn.readLine()
+            outC.print("INPUT: ")
+            val input = inC.readLine()
             evaluateInput(input, tag)
           }
           memory.store(l, v)

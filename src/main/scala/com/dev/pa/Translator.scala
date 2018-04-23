@@ -208,13 +208,17 @@ class Translator {
   }
 
   def transArgs(argsContext: ArgsContext): (Block, List[Expression]) = {
-    val blockEList = argsContext.e().asScala.toList.map(transE)
+    val blockEList = argsContext.arg().asScala.toList.map(transArg)
     val block = {
       blockEList.map(_._1).foldLeft(List.empty[Stmt]) {
         case (accumBlock, block1) => accumBlock ++ block1
       }
     }
     (block , blockEList.map(_._2))
+  }
+
+  def transArg(argContext: ArgContext): (Block, Expression) = {
+    transE(argContext.e())
   }
 
 }
