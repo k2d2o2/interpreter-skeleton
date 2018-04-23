@@ -49,6 +49,6 @@
 
 ## Goal
   * Complete the PA1 interpreter code by implementing **???** s
-  * Run src/test/scala/pa1/PA1Spec and pass all.
+  * Run src/test/scala/pa1/PA1Spec and pass all. (same as "./sbt test in Bash or test in sbt-shell")
   * This tutorial may help those who are not familiar with Scala.
     * <https://www.scala-exercises.org/scala_tutorial/terms_and_types>
