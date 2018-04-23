@@ -1,4 +1,14 @@
 
+## Prerequisite
+  * Install Scala-2.12
+  * (Optional) Git bash
+  * (Optional but maybe essential) Intellij Community Edition
+
+## How to run
+  * Execute sbt/sbt.bat
+  * Do clean or run or test
+    * > run test/pa1/test2.pa1 3 5
+
 ## Intellij Settings
  * Install Antlr4 plugin
  * Run "./sbt compile" or "sbt.bat - compile" or "compile" using sbt shell
@@ -39,5 +49,6 @@
 
 ## Goal
   * Complete the PA1 interpreter code by implementing **???** s
+  * Run src/test/scala/pa1/PA1Spec and pass all.
   * This tutorial may help those who are not familiar with Scala.
     * <https://www.scala-exercises.org/scala_tutorial/terms_and_types>
