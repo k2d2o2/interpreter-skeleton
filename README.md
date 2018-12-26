@@ -1,6 +1,6 @@
 
 ## Prerequisite
-  * Install Scala-2.12
+  * Install sbt
   * (Optional) Git bash
   * (Optional but maybe essential) Intellij Community Edition
 
