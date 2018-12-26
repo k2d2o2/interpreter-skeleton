@@ -22,7 +22,7 @@
        * check paired parens, paired braces
      * add patterns: *.pa1
 
-## Worklist of this skeleton
+## TODO
   * replace antlr4 with fastparse
   * replace scalatest with utest
   * design interpreter for more complicated target language
