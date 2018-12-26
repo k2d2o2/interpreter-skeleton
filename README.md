@@ -6,8 +6,10 @@
 
 ## How to run
   * Execute sbt
-  * Do clean or run or test
-    * > run test/pa1/test2.pa1 3 5
+    * Do clean or run or test
+        > run test/pa1/test2.pa1 3 5
+  * Or in bash 
+    * >sbt "run test/pa1/test2.pa1 3 5"
 
 ## Intellij Settings
  * Install Antlr4 plugin
