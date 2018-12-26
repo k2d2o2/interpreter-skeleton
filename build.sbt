@@ -2,7 +2,7 @@ name := "pl_exercise"
 
 version := "0.1"
 
-scalaVersion := "2.12.5"
+scalaVersion := "2.12.6"
 
 
 // sbt 1.1.x

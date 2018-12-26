@@ -5,13 +5,13 @@
   * (Optional but maybe essential) Intellij Community Edition
 
 ## How to run
-  * Execute sbt/sbt.bat
+  * Execute sbt
   * Do clean or run or test
     * > run test/pa1/test2.pa1 3 5
 
 ## Intellij Settings
  * Install Antlr4 plugin
- * Run "./sbt compile" or "sbt.bat - compile" or "compile" using sbt shell
+ * Run "sbt compile" or "compile" using sbt shell
  * Unmark source target/scala-2.12/src_managed/main/antlr4 in File - Project Structure - Modules if you want to build project with intellij
    * you should do this job every time you refresh sbt in Intellij
  * PA1 file setting
@@ -21,6 +21,12 @@
        * comment: //
        * check paired parens, paired braces
      * add patterns: *.pa1
+
+## Worklist of this skeleton
+  * replace antlr4 with fastparse
+  * replace scalatest with utest
+  * design interpreter for more complicated target language
+
 ## Target Language
 ### File extension
 * *.pa1
